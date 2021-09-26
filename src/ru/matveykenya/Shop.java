@@ -2,6 +2,7 @@ package ru.matveykenya;
 
 public class Shop {
     private final AutoProvider autoProvider;
+    private final int TIME_PROCESS = 2000;
     private boolean isCar = false;
     private String car = "";
 
@@ -14,20 +15,20 @@ public class Shop {
             System.out.println(Thread.currentThread().getName() + " прибыл в салон");
             try {
                 while (!isCar){
-                    System.out.println("Продавец: Машин пока нет! " + Thread.currentThread().getName() + " ждите пока...");
+                    System.out.println("Машин пока нет! " + Thread.currentThread().getName() + " ожидает...");
                     wait();
                 }
-                //  Процесс покупки.
-                System.out.println(Thread.currentThread().getName() + " покупает " + car);
-                isCar = false;
-                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + " поехал на новеньком " + car);
+            //  Процесс покупки.
+            System.out.println(Thread.currentThread().getName() + " покупает " + car);
+            isCar = false;
+            try {
+                System.out.println(Thread.currentThread().getName() + " поехал на новеньком " + car);
+                wait(TIME_PROCESS);
+            } catch (InterruptedException e) {}
         }
-        System.out.println(Thread.currentThread().getName() + " пошел домой пешком");
-        Thread.currentThread().interrupt();
     }
 
     public synchronized void putCar() {
@@ -35,18 +36,16 @@ public class Shop {
             if (!isCar){
                 car = autoProvider.getNextCar();
                 isCar = true;
-                System.out.println("Производитель " + car + " выпустил 1 авто");
+                System.out.println("\nПроизводитель " + car + " выпустил 1 авто\n");
                 notify();
-                System.out.println("нотифай");
             }
             try {
-                Thread.sleep(2000);
+                wait(AutoProvider.INTERVAL_MAKER);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("цикл putCar " + autoProvider.isNextCar() + " " + isCar);
         }
-        System.out.println("Поставщик сообщает, что Авто больше не будет!");
+        System.out.println("\n-----Поставщик сообщает, что Авто больше не будет!-----");
         Thread.currentThread().interrupt();
     }
 }

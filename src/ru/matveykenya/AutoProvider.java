@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class AutoProvider extends Thread {
     private final int countCars;
+    protected final static int INTERVAL_MAKER = 1500; // периодичность выпуска авто
     private final List<Cars> listCars = new ArrayList<>();
     Random random = new Random();
 
