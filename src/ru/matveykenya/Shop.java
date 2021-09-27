@@ -25,8 +25,11 @@ public class Shop {
             System.out.println(Thread.currentThread().getName() + " покупает " + car);
             isCar = false;
             try {
-                System.out.println(Thread.currentThread().getName() + " поехал на новеньком " + car);
-                wait(TIME_PROCESS);
+                Thread.sleep(TIME_PROCESS);
+            } catch (InterruptedException e) {}
+            System.out.println(Thread.currentThread().getName() + " поехал на новеньком " + car);
+            try {
+                Thread.sleep(TIME_PROCESS);
             } catch (InterruptedException e) {}
         }
     }
@@ -37,7 +40,7 @@ public class Shop {
                 car = autoProvider.getNextCar();
                 isCar = true;
                 System.out.println("\nПроизводитель " + car + " выпустил 1 авто\n");
-                notify();
+                notify(); // если применить notifyAll() - то покупает всегда только 1 покупатель
             }
             try {
                 wait(AutoProvider.INTERVAL_MAKER);
