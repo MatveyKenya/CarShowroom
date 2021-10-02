@@ -40,7 +40,7 @@ public class Shop {
                 car = autoProvider.getNextCar();
                 isCar = true;
                 System.out.println("\nПроизводитель " + car + " выпустил 1 авто\n");
-                notify(); // если применить notifyAll() - то покупает всегда только 1 покупатель
+                notifyAll();
             }
             try {
                 wait(AutoProvider.INTERVAL_MAKER);
